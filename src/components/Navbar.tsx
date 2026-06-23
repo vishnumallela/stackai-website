@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 
 import { useVoice, formatDuration } from "@/lib/voice";
@@ -11,10 +12,11 @@ const LINKS = [
 
 export function Navbar() {
   const { active } = useVoice();
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <header className="absolute inset-x-0 top-0 z-30">
-      {/* Notch — top-left: nav links + robot (desktop) / call pill (active) */}
+      {/* Notch — top-left: nav links (desktop) + orb / call pill (active) */}
       <motion.nav
         layout
         transition={{ type: "spring", bounce: 0.2, duration: 0.5 }}
@@ -43,6 +45,66 @@ export function Navbar() {
           ))}
         </span>
       </a>
+
+      {/* Mobile menu — nav links live behind a hamburger on phones */}
+      <div className="absolute right-6 top-3 md:hidden">
+        <button
+          type="button"
+          onClick={() => setMenuOpen((v) => !v)}
+          aria-label="Menu"
+          aria-expanded={menuOpen}
+          className="grid size-9 place-items-center text-white drop-shadow-[0_2px_6px_rgba(0,0,0,0.35)] transition-transform duration-150 ease-out active:scale-90"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            className="size-6"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={2}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden
+          >
+            {menuOpen ? (
+              <path d="M6 6l12 12M18 6 6 18" />
+            ) : (
+              <path d="M4 7h16M4 12h16M4 17h16" />
+            )}
+          </svg>
+        </button>
+
+        <AnimatePresence>
+          {menuOpen && (
+            <>
+              {/* Tap-away backdrop */}
+              <button
+                aria-hidden
+                tabIndex={-1}
+                onClick={() => setMenuOpen(false)}
+                className="fixed inset-0 -z-10 cursor-default"
+              />
+              <motion.div
+                initial={{ opacity: 0, y: -8, scale: 0.96 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -8, scale: 0.96 }}
+                transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
+                className="absolute right-0 mt-2 w-44 origin-top-right overflow-hidden rounded-2xl bg-background p-1.5 shadow-xl ring-1 ring-black/5"
+              >
+                {LINKS.map((link) => (
+                  <a
+                    key={link.label}
+                    href={link.href}
+                    onClick={() => setMenuOpen(false)}
+                    className="block rounded-xl px-3.5 py-2.5 text-sm text-foreground transition-colors duration-150 ease-out hover:bg-subtle"
+                  >
+                    {link.label}
+                  </a>
+                ))}
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>
+      </div>
     </header>
   );
 }
@@ -57,8 +119,8 @@ function LinksRow() {
       transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
       className="flex items-center gap-1 p-1.5"
     >
-      {/* Nav links — hidden on mobile so the notch stays compact */}
-      <div className="hidden items-center gap-0.5 sm:flex">
+      {/* Nav links — inline on desktop, hidden on mobile (see hamburger) */}
+      <div className="hidden items-center gap-0.5 md:flex">
         {LINKS.map((link) => (
           <a
             key={link.label}

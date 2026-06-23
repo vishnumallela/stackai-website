@@ -10,7 +10,7 @@ import {
 } from "@react-three/drei";
 import type { Group } from "three";
 
-const MODEL_URL = "/models/stackai_logo.glb";
+const MODEL_URL = "/models/stackai_logo_animated.glb";
 useGLTF.preload(MODEL_URL);
 
 function Model() {

@@ -19,7 +19,7 @@ export const Route = createRootRoute({
 function RootLayout() {
   return (
     <VoiceProvider>
-      <div className="flex min-h-dvh flex-col antialiased">
+      <div className="flex min-h-dvh flex-col overflow-x-hidden antialiased">
         <main className="flex-1">
           <Outlet />
         </main>
