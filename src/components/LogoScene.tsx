@@ -1,5 +1,5 @@
 import { Suspense, useEffect, useRef } from "react";
-import { Canvas } from "@react-three/fiber";
+import { Canvas, useFrame } from "@react-three/fiber";
 import {
   Bounds,
   Center,
@@ -8,7 +8,7 @@ import {
   useAnimations,
   useGLTF,
 } from "@react-three/drei";
-import type { Group } from "three";
+import type { Group, Object3D } from "three";
 
 const MODEL_URL = "/models/stackai_logo.glb";
 useGLTF.preload(MODEL_URL);
@@ -17,14 +17,37 @@ function Model() {
   const ref = useRef<Group>(null);
   const { scene, animations } = useGLTF(MODEL_URL);
   const { actions, names } = useAnimations(animations, ref);
+  const stepsRef = useRef<Object3D[]>([]);
 
-  // Play the GLB's own baked animation clip(s) on mount, looping.
+  // Play any baked clips the GLB carries (the static logo has none).
   useEffect(() => {
     names.forEach((name) => actions[name]?.reset().fadeIn(0.3).play());
     return () => {
       names.forEach((name) => actions[name]?.fadeOut(0.3));
     };
   }, [actions, names]);
+
+  // Collect the step meshes (Cube.001…006) to animate them, low → high.
+  useEffect(() => {
+    const steps: Object3D[] = [];
+    scene.traverse((o) => {
+      if (o.name.startsWith("Cube") && (o as { isMesh?: boolean }).isMesh) {
+        steps.push(o);
+      }
+    });
+    steps.sort((a, b) => a.position.y - b.position.y);
+    stepsRef.current = steps;
+  }, [scene]);
+
+  // Idle animation: each step gently rotates around its vertical axis
+  // (alternating direction). Rotation keeps the stack touching — no gaps.
+  useFrame((_, dt) => {
+    const steps = stepsRef.current;
+    const d = Math.min(dt, 0.05);
+    for (let i = 0; i < steps.length; i++) {
+      steps[i].rotation.y += d * 0.4 * (i % 2 === 0 ? 1 : -1);
+    }
+  });
 
   return (
     <group ref={ref}>
@@ -61,7 +84,7 @@ export function LogoScene() {
           color="#ffffff"
         />
 
-        <Bounds fit margin={1.0}>
+        <Bounds fit margin={1.2}>
           <Center>
             <Model />
           </Center>
