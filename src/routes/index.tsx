@@ -17,7 +17,7 @@ export const Route = createFileRoute("/")({
 const CLIENT_LOGOS = [
   { src: "/client-logos/acrodocz.webp", alt: "Acrodocz" },
   { src: "/client-logos/biba.png", alt: "Biba" },
-  { src: "/client-logos/humainlearning.webp", alt: "Humain Learning" },
+  { src: "/client-logos/khaitan.png", alt: "Khaitan Public School" },
   { src: "/client-logos/intalent.webp", alt: "Intalent" },
   { src: "/client-logos/prabhanews.webp", alt: "Prabha News" },
   { src: "/client-logos/propertybox.png", alt: "PropertyBox" },
