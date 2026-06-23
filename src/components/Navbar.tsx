@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from "motion/react";
 
 import { useVoice, formatDuration } from "@/lib/voice";
+import { Orb } from "@/components/Orb";
 
 const LINKS = [
   { label: "Home", href: "#" },
@@ -9,15 +10,15 @@ const LINKS = [
 ] as const;
 
 export function Navbar() {
-  const { active, start } = useVoice();
+  const { active } = useVoice();
 
   return (
     <header className="absolute inset-x-0 top-0 z-30">
-      {/* Notch — top-left: nav links (desktop) / call pill (active). Hidden on mobile when idle. */}
+      {/* Notch — top-left: nav links + robot (desktop) / call pill (active) */}
       <motion.nav
         layout
         transition={{ type: "spring", bounce: 0.2, duration: 0.5 }}
-        className={`absolute left-6 top-0 items-center overflow-hidden rounded-b-2xl bg-background shadow-lg shadow-black/10 ring-1 ring-black/5 ${active ? "flex" : "hidden sm:flex"}`}
+        className="absolute left-6 top-0 flex items-center overflow-hidden rounded-b-2xl bg-background shadow-lg shadow-black/10 ring-1 ring-black/5"
       >
         <AnimatePresence mode="popLayout" initial={false}>
           {active ? <CallPill key="call" /> : <LinksRow key="links" />}
@@ -42,56 +43,43 @@ export function Navbar() {
           ))}
         </span>
       </a>
-
-      {/* Voice orb — top-right call trigger */}
-      {!active && (
-        <button
-          type="button"
-          onClick={start}
-          aria-label="Talk to StackBot, our voice assistant"
-          className="absolute right-6 top-4 text-white drop-shadow-[0_2px_6px_rgba(0,0,0,0.35)] transition-transform duration-150 ease-out hover:scale-110 active:scale-95"
-        >
-          <svg
-            viewBox="0 0 24 24"
-            className="size-8"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth={1.8}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            aria-hidden
-          >
-            <path d="M12 8V4H8" />
-            <rect width="16" height="12" x="4" y="8" rx="2" />
-            <path d="M2 14h2" />
-            <path d="M20 14h2" />
-            <path d="M15 13v2" />
-            <path d="M9 13v2" />
-          </svg>
-        </button>
-      )}
     </header>
   );
 }
 
 function LinksRow() {
+  const { start } = useVoice();
   return (
     <motion.div
       initial={{ opacity: 0, filter: "blur(4px)" }}
       animate={{ opacity: 1, filter: "blur(0px)" }}
       exit={{ opacity: 0, filter: "blur(4px)" }}
       transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-      className="flex items-center gap-0.5 p-1.5"
+      className="flex items-center gap-1 p-1.5"
     >
-      {LINKS.map((link) => (
-        <a
-          key={link.label}
-          href={link.href}
-          className="rounded-full px-3.5 py-1.5 text-sm text-muted transition-colors duration-150 ease-out hover:bg-subtle hover:text-foreground"
-        >
-          {link.label}
-        </a>
-      ))}
+      {/* Nav links — hidden on mobile so the notch stays compact */}
+      <div className="hidden items-center gap-0.5 sm:flex">
+        {LINKS.map((link) => (
+          <a
+            key={link.label}
+            href={link.href}
+            className="rounded-full px-3.5 py-1.5 text-sm text-muted transition-colors duration-150 ease-out hover:bg-subtle hover:text-foreground"
+          >
+            {link.label}
+          </a>
+        ))}
+        <span className="mx-1 h-4 w-px shrink-0 bg-(--border)" />
+      </div>
+
+      {/* Voice orb — tap to talk to StackBot */}
+      <button
+        type="button"
+        onClick={start}
+        aria-label="Talk to StackBot, our voice assistant"
+        className="shrink-0 rounded-full transition-transform duration-150 ease-out hover:scale-110 active:scale-95"
+      >
+        <Orb colors={["#F59E0B", "#FDE047"]} className="pointer-events-none size-8" />
+      </button>
     </motion.div>
   );
 }
