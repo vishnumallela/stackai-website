@@ -17,7 +17,7 @@ function Model() {
   const ref = useRef<Group>(null);
   const { scene, animations } = useGLTF(MODEL_URL);
   const { actions, names } = useAnimations(animations, ref);
-  const stepsRef = useRef<Object3D[]>([]);
+  const spinRef = useRef<Object3D | null>(null);
 
   // Play any baked clips the GLB carries (the static logo has none).
   useEffect(() => {
@@ -27,7 +27,7 @@ function Model() {
     };
   }, [actions, names]);
 
-  // Collect the step meshes (Cube.001…006) to animate them, low → high.
+  // Pick ONE step to animate (the top one); every other step stays still.
   useEffect(() => {
     const steps: Object3D[] = [];
     scene.traverse((o) => {
@@ -36,17 +36,21 @@ function Model() {
       }
     });
     steps.sort((a, b) => a.position.y - b.position.y);
-    stepsRef.current = steps;
+    steps.forEach((o) => (o.rotation.y = 0)); // keep the rest static
+    spinRef.current = steps[steps.length - 1] ?? null; // top step
   }, [scene]);
 
-  // Idle animation: each step gently rotates around its vertical axis
-  // (alternating direction). Rotation keeps the stack touching — no gaps.
-  useFrame((_, dt) => {
-    const steps = stepsRef.current;
-    const d = Math.min(dt, 0.05);
-    for (let i = 0; i < steps.length; i++) {
-      steps[i].rotation.y += d * 0.4 * (i % 2 === 0 ? 1 : -1);
-    }
+  // The one step rotates a full turn, eases to rest (settle), pauses, repeats.
+  // 2π ≡ 0 so the loop is seamless; no other step ever moves.
+  useFrame((state) => {
+    const o = spinRef.current;
+    if (!o) return;
+    const CYCLE = 4.4;
+    const SETTLE = 2.4;
+    const t = state.clock.elapsedTime % CYCLE;
+    const p = Math.min(t / SETTLE, 1);
+    const eased = 1 - Math.pow(1 - p, 3); // easeOutCubic
+    o.rotation.y = eased * Math.PI * 2;
   });
 
   return (
@@ -84,7 +88,7 @@ export function LogoScene() {
           color="#ffffff"
         />
 
-        <Bounds fit margin={1.2}>
+        <Bounds fit margin={1.05}>
           <Center>
             <Model />
           </Center>
