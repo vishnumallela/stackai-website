@@ -101,7 +101,7 @@ export function LogoScene() {
           color="#ffffff"
         />
 
-        <Bounds fit margin={1.15}>
+        <Bounds fit margin={0.95}>
           <Center>
             <Model />
           </Center>
