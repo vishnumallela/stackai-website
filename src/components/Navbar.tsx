@@ -49,17 +49,28 @@ export function Navbar() {
           type="button"
           onClick={start}
           aria-label="Talk to StackBot, our voice assistant"
-          className="absolute right-6 top-4 overflow-hidden rounded-full shadow-lg shadow-black/20 ring-1 ring-white/50 transition-transform duration-150 ease-out hover:scale-105 active:scale-95"
+          className="group absolute right-6 top-4 size-10 rounded-full outline-none"
         >
+          {/* Soft pulsing glow — gives life without spinning the orb */}
           <motion.span
             aria-hidden
-            className="block size-10 rounded-full"
+            className="absolute -inset-1 rounded-full opacity-50 blur-md"
             style={{
-              background:
-                "conic-gradient(from 0deg, #FACC15, #F472B6, #A855F7, #2563EB, #22D3EE, #FACC15)",
+              backgroundImage:
+                "radial-gradient(circle at 50% 50%, #F472B6 0%, #3B82F6 65%, transparent 80%)",
             }}
-            animate={{ rotate: 360 }}
-            transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+            animate={{ opacity: [0.35, 0.6, 0.35], scale: [0.95, 1.05, 0.95] }}
+            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+          />
+          {/* Crisp iridescent orb */}
+          <span
+            aria-hidden
+            className="absolute inset-0 rounded-full shadow-lg shadow-black/20 ring-1 ring-white/50 transition-transform duration-150 ease-out group-hover:scale-105 group-active:scale-95"
+            style={{
+              backgroundColor: "#6366F1",
+              backgroundImage:
+                "radial-gradient(circle at 30% 25%, #FDE68A 0%, transparent 55%), radial-gradient(circle at 78% 32%, #F472B6 0%, transparent 55%), radial-gradient(circle at 72% 78%, #3B82F6 0%, transparent 60%), radial-gradient(circle at 22% 74%, #22D3EE 0%, transparent 55%)",
+            }}
           />
         </button>
       )}
