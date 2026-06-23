@@ -49,29 +49,25 @@ export function Navbar() {
           type="button"
           onClick={start}
           aria-label="Talk to StackBot, our voice assistant"
-          className="group absolute right-6 top-4 size-10 rounded-full outline-none"
+          className="absolute right-6 top-4 text-white drop-shadow-[0_2px_6px_rgba(0,0,0,0.35)] transition-transform duration-150 ease-out hover:scale-110 active:scale-95"
         >
-          {/* Soft pulsing glow — gives life without spinning the orb */}
-          <motion.span
+          <svg
+            viewBox="0 0 24 24"
+            className="size-8"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={1.8}
+            strokeLinecap="round"
+            strokeLinejoin="round"
             aria-hidden
-            className="absolute -inset-1 rounded-full opacity-50 blur-md"
-            style={{
-              backgroundImage:
-                "radial-gradient(circle at 50% 50%, #F472B6 0%, #3B82F6 65%, transparent 80%)",
-            }}
-            animate={{ opacity: [0.35, 0.6, 0.35], scale: [0.95, 1.05, 0.95] }}
-            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-          />
-          {/* Crisp iridescent orb */}
-          <span
-            aria-hidden
-            className="absolute inset-0 rounded-full shadow-lg shadow-black/20 ring-1 ring-white/50 transition-transform duration-150 ease-out group-hover:scale-105 group-active:scale-95"
-            style={{
-              backgroundColor: "#6366F1",
-              backgroundImage:
-                "radial-gradient(circle at 30% 25%, #FDE68A 0%, transparent 55%), radial-gradient(circle at 78% 32%, #F472B6 0%, transparent 55%), radial-gradient(circle at 72% 78%, #3B82F6 0%, transparent 60%), radial-gradient(circle at 22% 74%, #22D3EE 0%, transparent 55%)",
-            }}
-          />
+          >
+            <path d="M12 8V4H8" />
+            <rect width="16" height="12" x="4" y="8" rx="2" />
+            <path d="M2 14h2" />
+            <path d="M20 14h2" />
+            <path d="M15 13v2" />
+            <path d="M9 13v2" />
+          </svg>
         </button>
       )}
     </header>
