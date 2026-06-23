@@ -17,7 +17,9 @@ function Model() {
   const ref = useRef<Group>(null);
   const { scene, animations } = useGLTF(MODEL_URL);
   const { actions, names } = useAnimations(animations, ref);
-  const spinRef = useRef<Object3D | null>(null);
+  const stepsRef = useRef<
+    { obj: Object3D; phase: number; period: number; settle: number; dir: number }[]
+  >([]);
 
   // Play any baked clips the GLB carries (the static logo has none).
   useEffect(() => {
@@ -27,7 +29,8 @@ function Model() {
     };
   }, [actions, names]);
 
-  // Pick ONE step to animate (the top one); every other step stays still.
+  // Every step gets its own staggered rotate-and-settle cycle, so different
+  // steps spin at different (random) times — never all at once.
   useEffect(() => {
     const steps: Object3D[] = [];
     scene.traverse((o) => {
@@ -36,21 +39,31 @@ function Model() {
       }
     });
     steps.sort((a, b) => a.position.y - b.position.y);
-    steps.forEach((o) => (o.rotation.y = 0)); // keep the rest static
-    spinRef.current = steps[steps.length - 1] ?? null; // top step
+    const rnd = (n: number) => ((n * 9301 + 49297) % 233280) / 233280;
+    stepsRef.current = steps.map((obj, i) => {
+      obj.rotation.y = 0;
+      return {
+        obj,
+        period: 5.5 + rnd(i + 1) * 3.5, // 5.5–9s between spins
+        phase: rnd(i + 7) * (5.5 + rnd(i + 1) * 3.5), // random offset so it staggers
+        settle: 2.4,
+        dir: i % 2 === 0 ? 1 : -1,
+      };
+    });
   }, [scene]);
 
-  // The one step rotates a full turn, eases to rest (settle), pauses, repeats.
-  // 2π ≡ 0 so the loop is seamless; no other step ever moves.
+  // Each step spins one full turn, eases to rest (settle), holds, then repeats.
+  // 2π·dir ≡ 0 → seamless loop; staggered phases make it read as random steps.
   useFrame((state) => {
-    const o = spinRef.current;
-    if (!o) return;
-    const CYCLE = 4.4;
-    const SETTLE = 2.4;
-    const t = state.clock.elapsedTime % CYCLE;
-    const p = Math.min(t / SETTLE, 1);
-    const eased = 1 - Math.pow(1 - p, 3); // easeOutCubic
-    o.rotation.y = eased * Math.PI * 2;
+    const t = state.clock.elapsedTime;
+    const steps = stepsRef.current;
+    for (let i = 0; i < steps.length; i++) {
+      const { obj, phase, period, settle, dir } = steps[i];
+      const local = (t + phase) % period;
+      const p = Math.min(local / settle, 1);
+      const eased = 1 - Math.pow(1 - p, 3); // easeOutCubic
+      obj.rotation.y = dir * eased * Math.PI * 2;
+    }
   });
 
   return (
@@ -88,7 +101,7 @@ export function LogoScene() {
           color="#ffffff"
         />
 
-        <Bounds fit margin={1.05}>
+        <Bounds fit margin={1.15}>
           <Center>
             <Model />
           </Center>
