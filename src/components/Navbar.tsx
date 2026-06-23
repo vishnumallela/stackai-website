@@ -12,12 +12,23 @@ export function Navbar() {
   const { active, start } = useVoice();
 
   return (
-    <header className="absolute inset-x-0 top-0 z-30 flex justify-center px-6">
-      {/* Brand, top-left */}
+    <header className="absolute inset-x-0 top-0 z-30">
+      {/* Notch — top-left: nav links (desktop) / call pill (active). Hidden on mobile when idle. */}
+      <motion.nav
+        layout
+        transition={{ type: "spring", bounce: 0.2, duration: 0.5 }}
+        className={`absolute left-6 top-0 items-center overflow-hidden rounded-b-2xl bg-background shadow-lg shadow-black/10 ring-1 ring-black/5 ${active ? "flex" : "hidden sm:flex"}`}
+      >
+        <AnimatePresence mode="popLayout" initial={false}>
+          {active ? <CallPill key="call" /> : <LinksRow key="links" />}
+        </AnimatePresence>
+      </motion.nav>
+
+      {/* Brand — centered */}
       <a
         href="#"
         aria-label="Stack AI Solutions"
-        className="absolute left-6 top-4 flex flex-col font-display leading-none text-white"
+        className="absolute left-1/2 top-4 flex -translate-x-1/2 flex-col items-center font-display leading-none text-white"
       >
         <span className="text-xl font-bold uppercase tracking-tight">Stack AI</span>
         <span
@@ -31,17 +42,6 @@ export function Navbar() {
           ))}
         </span>
       </a>
-
-      {/* Notch: nav links (desktop) / call pill (active). Hidden on mobile when idle. */}
-      <motion.nav
-        layout
-        transition={{ type: "spring", bounce: 0.2, duration: 0.5 }}
-        className={`items-center overflow-hidden rounded-b-2xl bg-background shadow-lg shadow-black/10 ring-1 ring-black/5 ${active ? "flex" : "hidden sm:flex"}`}
-      >
-        <AnimatePresence mode="popLayout" initial={false}>
-          {active ? <CallPill key="call" /> : <LinksRow key="links" />}
-        </AnimatePresence>
-      </motion.nav>
 
       {/* Voice orb — top-right call trigger */}
       {!active && (
