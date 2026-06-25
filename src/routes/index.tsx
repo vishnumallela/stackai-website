@@ -45,57 +45,53 @@ function HomePage() {
         {/* Notch navbar, anchored to the top of the hero card */}
         <Navbar />
 
-        <div className="relative mx-auto flex w-full max-w-6xl flex-1 flex-col px-6">
-          {/* Text + 3D */}
-          <div className="grid grid-cols-1 flex-1 items-center gap-6 pt-20 sm:gap-10 sm:pt-24 lg:grid-cols-[1fr_1.3fr]">
-            {/* Left: copy */}
-            <div className="min-w-0 text-center lg:text-left">
-              <motion.h1
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.05, ease: [0.2, 0, 0, 1] }}
-                className="mx-auto max-w-2xl text-balance font-display text-3xl font-semibold leading-[1.07] tracking-tight text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.25)] sm:text-6xl lg:mx-0 lg:text-7xl"
-              >
-                Engineering the next generation of AI products
-              </motion.h1>
-
-              <motion.p
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.55, delay: 0.12, ease: [0.2, 0, 0, 1] }}
-                className="mx-auto mt-4 max-w-md text-balance text-base font-medium leading-relaxed text-white/85 sm:mt-6 sm:text-lg lg:mx-0"
-              >
-                Stack AI Solutions builds custom AI agents and automation that
-                turn your data, tools, and workflows into real business
-                outcomes.
-              </motion.p>
-
-              <motion.div
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.55, delay: 0.2, ease: [0.2, 0, 0, 1] }}
-                className="mt-7 flex justify-center sm:mt-8 lg:justify-start"
-              >
-                <a
-                  href="#"
-                  className={buttonClass(
-                    "primary",
-                    "lg",
-                    "w-full max-w-xs bg-white text-black hover:bg-white/90 sm:w-auto sm:max-w-none",
-                  )}
-                >
-                  Book a demo
-                </a>
-              </motion.div>
-            </div>
-
-            {/* Right: 3D logo */}
-            <div className="relative order-first h-60 min-w-0 sm:h-96 lg:order-last lg:h-176">
-              <Suspense fallback={null}>
-                <LogoScene />
-              </Suspense>
-            </div>
+        {/* 3D object — zoomed & slanted, overflowing the right edge; BEHIND the text */}
+        <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
+          <div className="absolute top-1/2 right-[-22%] h-[170%] w-[95%] -translate-y-1/2 rotate-[-14deg] sm:right-[-8%] sm:w-[70%]">
+            <Suspense fallback={null}>
+              <LogoScene />
+            </Suspense>
           </div>
+        </div>
+
+        {/* Text — centered, above the 3D */}
+        <div className="relative z-10 mx-auto flex w-full max-w-4xl flex-1 flex-col items-center justify-center px-6 pt-24 pb-6 text-center">
+          <motion.h1
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: [0.2, 0, 0, 1] }}
+            className="mx-auto max-w-3xl text-balance font-display text-4xl font-semibold leading-[1.04] tracking-tight text-white drop-shadow-[0_2px_22px_rgba(0,0,0,0.65)] sm:text-6xl lg:text-7xl"
+          >
+            Engineering the next generation of AI products
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.12, ease: [0.2, 0, 0, 1] }}
+            className="mx-auto mt-6 max-w-xl text-balance text-base font-medium leading-relaxed text-white/90 drop-shadow-[0_1px_12px_rgba(0,0,0,0.6)] sm:text-lg"
+          >
+            Stack AI Solutions builds custom AI agents and automation that turn
+            your data, tools, and workflows into real business outcomes.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2, ease: [0.2, 0, 0, 1] }}
+            className="mt-8 flex justify-center"
+          >
+            <a
+              href="#"
+              className={buttonClass(
+                "primary",
+                "lg",
+                "w-full max-w-xs bg-white text-black hover:bg-white/90 sm:w-auto sm:max-w-none",
+              )}
+            >
+              Book a demo
+            </a>
+          </motion.div>
         </div>
 
         {/* Client logo loop, full width */}
