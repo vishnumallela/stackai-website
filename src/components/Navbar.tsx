@@ -11,54 +11,40 @@ const LINKS = [
 ] as const;
 
 export function Navbar() {
-  const { active, start } = useVoice();
+  const { active } = useVoice();
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <header className="absolute inset-x-0 top-0 z-30">
-      {/* Notch — top-left: nav links (desktop) / call pill (active) */}
+      {/* Notch — top-left: nav links + orb (desktop) / call pill (active) */}
       <motion.nav
         layout
         transition={{ type: "spring", bounce: 0.2, duration: 0.5 }}
-        className={`absolute left-6 top-0 items-center overflow-hidden rounded-b-2xl bg-background shadow-lg shadow-black/10 ring-1 ring-black/5 ${active ? "flex" : "hidden md:flex"}`}
+        className="absolute left-6 top-0 flex items-center overflow-hidden rounded-b-2xl bg-background shadow-lg shadow-black/10 ring-1 ring-black/5"
       >
         <AnimatePresence mode="popLayout" initial={false}>
           {active ? <CallPill key="call" /> : <LinksRow key="links" />}
         </AnimatePresence>
       </motion.nav>
 
-      {/* Brand + voice icon — centered */}
-      <div className="absolute left-1/2 top-3 flex -translate-x-1/2 flex-col items-center gap-2.5">
-        <a
-          href="#"
-          aria-label="Stack AI Solutions"
-          className="flex flex-col items-center font-display leading-none text-white"
+      {/* Brand — centered */}
+      <a
+        href="#"
+        aria-label="Stack AI Solutions"
+        className="absolute left-1/2 top-4 flex -translate-x-1/2 flex-col items-center font-display leading-none text-white"
+      >
+        <span className="text-xl font-bold uppercase tracking-tight">Stack AI</span>
+        <span
+          aria-label="Solutions"
+          className="-mt-0.5 flex w-full justify-between text-[10px] font-bold uppercase tracking-wide"
         >
-          <span className="text-xl font-bold uppercase tracking-tight">Stack AI</span>
-          <span
-            aria-label="Solutions"
-            className="-mt-0.5 flex w-full justify-between text-[10px] font-bold uppercase tracking-wide"
-          >
-            {"SOLUTIONS".split("").map((char, i) => (
-              <span key={i} aria-hidden>
-                {char}
-              </span>
-            ))}
-          </span>
-        </a>
-
-        {/* Voice icon — just below the logo */}
-        {!active && (
-          <button
-            type="button"
-            onClick={start}
-            aria-label="Talk to StackBot, our voice assistant"
-            className="rounded-full transition-transform duration-150 ease-out hover:scale-110 active:scale-95"
-          >
-            <Orb colors={["#F59E0B", "#FDE047"]} className="pointer-events-none size-9" />
-          </button>
-        )}
-      </div>
+          {"SOLUTIONS".split("").map((char, i) => (
+            <span key={i} aria-hidden>
+              {char}
+            </span>
+          ))}
+        </span>
+      </a>
 
       {/* Mobile menu — nav links live behind a hamburger on phones */}
       <div className="absolute right-6 top-3 md:hidden">
@@ -124,23 +110,37 @@ export function Navbar() {
 }
 
 function LinksRow() {
+  const { start } = useVoice();
   return (
     <motion.div
       initial={{ opacity: 0, filter: "blur(4px)" }}
       animate={{ opacity: 1, filter: "blur(0px)" }}
       exit={{ opacity: 0, filter: "blur(4px)" }}
       transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-      className="flex items-center gap-0.5 p-1.5"
+      className="flex items-center gap-1 p-1.5"
     >
-      {LINKS.map((link) => (
-        <a
-          key={link.label}
-          href={link.href}
-          className="rounded-full px-3.5 py-1.5 text-sm text-muted transition-colors duration-150 ease-out hover:bg-subtle hover:text-foreground"
-        >
-          {link.label}
-        </a>
-      ))}
+      {/* Nav links — inline on desktop, hidden on mobile (see hamburger) */}
+      <div className="hidden items-center gap-0.5 md:flex">
+        {LINKS.map((link) => (
+          <a
+            key={link.label}
+            href={link.href}
+            className="rounded-full px-3.5 py-1.5 text-sm text-muted transition-colors duration-150 ease-out hover:bg-subtle hover:text-foreground"
+          >
+            {link.label}
+          </a>
+        ))}
+      </div>
+
+      {/* Voice orb — tap to talk to StackBot */}
+      <button
+        type="button"
+        onClick={start}
+        aria-label="Talk to StackBot, our voice assistant"
+        className="shrink-0 rounded-full transition-transform duration-150 ease-out hover:scale-110 active:scale-95"
+      >
+        <Orb colors={["#F59E0B", "#FDE047"]} className="pointer-events-none size-8" />
+      </button>
     </motion.div>
   );
 }

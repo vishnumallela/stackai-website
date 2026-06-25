@@ -57,8 +57,8 @@ function HomePage() {
             transition={{ duration: 0.55, delay: 0.12, ease: [0.2, 0, 0, 1] }}
             className="mx-auto mt-5 max-w-2xl text-balance text-base font-medium leading-relaxed text-white/90 drop-shadow-[0_1px_10px_rgba(0,0,0,0.5)] sm:mt-6 sm:text-lg"
           >
-            Stack AI Solutions builds custom AI agents and automation that turn
-            your data, tools, and workflows into real business outcomes.
+            We build custom AI agents and automation that turn your data, tools,
+            and workflows into real business outcomes.
           </motion.p>
 
           <motion.div
