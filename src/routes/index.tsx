@@ -101,7 +101,7 @@ function HomePage() {
         {/* Client logo loop, full width */}
         <div className="relative pb-10">
           <p className="px-8 text-left font-mono text-xs uppercase tracking-widest text-white/80">
-            Trusted by teams building what&apos;s next
+            Partners growing with us
           </p>
           <div className="relative mt-8 [&_img]:brightness-0 [&_img]:invert">
             <LogoLoop
