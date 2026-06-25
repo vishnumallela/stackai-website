@@ -47,7 +47,7 @@ function HomePage() {
 
         {/* 3D object — zoomed & slanted, overflowing the right edge; BEHIND the text */}
         <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
-          <div className="absolute top-1/2 right-[-22%] h-[170%] w-[95%] -translate-y-1/2 rotate-[-14deg] sm:right-[-8%] sm:w-[70%]">
+          <div className="absolute top-1/2 right-[-22%] h-[170%] w-[95%] -translate-y-1/2 rotate-14 sm:right-[-8%] sm:w-[70%]">
             <Suspense fallback={null}>
               <LogoScene />
             </Suspense>
