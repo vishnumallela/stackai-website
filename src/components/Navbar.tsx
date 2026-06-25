@@ -130,7 +130,6 @@ function LinksRow() {
             {link.label}
           </a>
         ))}
-        <span className="mx-1 h-4 w-px shrink-0 bg-(--border)" />
       </div>
 
       {/* Voice orb — tap to talk to StackBot */}
