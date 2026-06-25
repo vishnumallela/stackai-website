@@ -5,6 +5,7 @@ import { RouterProvider, createRouter } from "@tanstack/react-router";
 import "@fontsource-variable/geist/index.css";
 import "@fontsource-variable/geist-mono/index.css";
 import "@fontsource-variable/space-grotesk/index.css";
+import "@fontsource-variable/fraunces/opsz.css";
 import "./styles.css";
 import { routeTree } from "./routeTree.gen";
 

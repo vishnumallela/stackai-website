@@ -1,14 +1,5 @@
 @import "tailwindcss";
 
-/* Clash Display — premium variable display font (self-hosted from Fontshare) */
-@font-face {
-  font-family: "Clash Display";
-  src: url("/fonts/clash-display.woff2") format("woff2");
-  font-weight: 200 700;
-  font-style: normal;
-  font-display: swap;
-}
-
 /* ──────────────────────────────────────────────────────────────────────────
    Geist-inspired design system (https://vercel.com/design)
    Minimal, high-contrast: near-neutral surfaces, restrained color, subtle
@@ -19,7 +10,7 @@
   --font-sans: "Geist Variable", ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-mono: "Geist Mono Variable", ui-monospace, "SF Mono", Menlo, monospace;
   --font-brand: "Space Grotesk Variable", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Clash Display", "Geist Variable", ui-sans-serif, sans-serif;
+  --font-display: "Fraunces Variable", ui-serif, Georgia, "Times New Roman", serif;
 
   /* Radii — 6px everyday, 12px menus/cards, 16px fullscreen, pills */
   --radius-sm: 6px;
