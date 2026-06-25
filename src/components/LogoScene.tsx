@@ -40,8 +40,7 @@ function Model() {
     });
     steps.sort((a, b) => a.position.y - b.position.y);
     const rnd = (n: number) => ((n * 9301 + 49297) % 233280) / 233280;
-    // Only the smaller upper steps rotate; the wide base steps stay static so
-    // the model can fill the frame without the big steps clipping when they spin.
+    // Every step rotates, each on its own staggered random cycle.
     const rotating: {
       obj: Object3D;
       phase: number;
@@ -51,16 +50,14 @@ function Model() {
     }[] = [];
     steps.forEach((obj, i) => {
       obj.rotation.y = 0;
-      if (i >= steps.length - 3) {
-        const period = 5.5 + rnd(i + 1) * 3.5; // 5.5–9s between spins
-        rotating.push({
-          obj,
-          period,
-          phase: rnd(i + 7) * period, // random offset so it staggers
-          settle: 2.4,
-          dir: i % 2 === 0 ? 1 : -1,
-        });
-      }
+      const period = 5.5 + rnd(i + 1) * 3.5; // 5.5–9s between spins
+      rotating.push({
+        obj,
+        period,
+        phase: rnd(i + 7) * period, // random offset so it staggers
+        settle: 2.4,
+        dir: i % 2 === 0 ? 1 : -1,
+      });
     });
     stepsRef.current = rotating;
   }, [scene]);
@@ -114,7 +111,7 @@ export function LogoScene() {
           color="#ffffff"
         />
 
-        <Bounds fit margin={1.05}>
+        <Bounds fit margin={1.2}>
           <Center>
             <Model />
           </Center>
