@@ -33,13 +33,13 @@ function HomePage() {
     <div className="dotted bg-background p-4 sm:p-6">
       {/* ── Hero (gradient framed by a white dotted cutout) ── */}
       <section className="relative flex min-h-[calc(100dvh-2rem)] flex-col overflow-hidden rounded-3xl bg-black shadow-[0_24px_70px_-20px_rgba(0,0,0,0.45)] sm:min-h-[calc(100dvh-3rem)]">
-        {/* Clear-sky image background */}
+        {/* Hero background image */}
         <div className="pointer-events-none absolute inset-0">
           <div
             className="absolute inset-0 scale-105 bg-cover bg-center blur-sm"
-            style={{ backgroundImage: "url(/textures/sky.jpg)" }}
+            style={{ backgroundImage: "url(/textures/bg.jpg)" }}
           />
-          <div className="absolute inset-0 bg-white/10" />
+          <div className="absolute inset-0 bg-black/25" />
         </div>
 
         {/* Notch navbar, anchored to the top of the hero card */}
