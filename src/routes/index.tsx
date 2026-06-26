@@ -1,13 +1,92 @@
+import { useEffect, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { motion } from "motion/react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import type { Variants } from "motion/react";
 
 import { buttonClass } from "@/components/ui/button";
 import LogoLoop from "@/components/LogoLoop";
 import { Navbar } from "@/components/Navbar";
+import { SolutionsSection } from "@/components/solutions/SolutionsSection";
 
 export const Route = createFileRoute("/")({
   component: HomePage,
 });
+
+// Hero headlines, cycled every 4s with a colourful glitch on each swap.
+const HERO_TITLES = [
+  "Engineering the next generation of AI products",
+  "Automating the work that slows your team down",
+  "Custom AI agents built for real-world impact",
+];
+
+function GlitchTitle() {
+  const [index, setIndex] = useState(0);
+  const reduceMotion = useReducedMotion();
+
+  useEffect(() => {
+    const id = setInterval(
+      () => setIndex((i) => (i + 1) % HERO_TITLES.length),
+      4000,
+    );
+    return () => clearInterval(id);
+  }, []);
+
+  const title = HERO_TITLES[index];
+
+  // Apple-style spring with subtle bounce; the incoming line springs up from
+  // below while the old one floats off the top — both move at once (no "wait"
+  // replace). Blur masks the brief overlap so it reads as one smooth swap.
+  // Reduced motion keeps the crossfade but drops all positional movement.
+  const variants: Variants = reduceMotion
+    ? {
+        initial: { opacity: 0 },
+        animate: { opacity: 1, transition: { duration: 0.25 } },
+        exit: { opacity: 0, transition: { duration: 0.2 } },
+      }
+    : {
+        initial: { opacity: 0, y: "0.5em", scale: 0.96, filter: "blur(8px)" },
+        animate: {
+          opacity: 1,
+          y: "0em",
+          scale: 1,
+          filter: "blur(0px)",
+          transition: {
+            type: "spring",
+            duration: 0.75,
+            bounce: 0.3,
+            opacity: { duration: 0.4, ease: [0.23, 1, 0.32, 1] },
+            filter: { duration: 0.45, ease: [0.23, 1, 0.32, 1] },
+          },
+        },
+        exit: {
+          opacity: 0,
+          y: "-0.4em",
+          scale: 0.98,
+          filter: "blur(8px)",
+          transition: { duration: 0.3, ease: [0.23, 1, 0.32, 1] },
+        },
+      };
+
+  return (
+    // Grid stacks both titles in one centered cell so enter + exit can overlap
+    // without layout shift; each h1 stays sized to its own text.
+    <div className="relative mx-auto grid min-h-[2.2em] w-full max-w-5xl place-items-center">
+      <AnimatePresence initial={false}>
+        <motion.h1
+          key={index}
+          variants={variants}
+          initial="initial"
+          animate="animate"
+          exit="exit"
+          className="glitch col-start-1 row-start-1 max-w-5xl text-balance font-display text-4xl font-semibold leading-[1.05] tracking-tight text-white drop-shadow-[0_2px_16px_rgba(0,0,0,0.5)] sm:text-6xl lg:text-7xl"
+          data-text={title}
+        >
+          <span className="glitch-base">{title}</span>
+        </motion.h1>
+      </AnimatePresence>
+    </div>
+  );
+}
 
 const CLIENT_LOGOS = [
   { src: "/client-logos/acrodocz.webp", alt: "Acrodocz" },
@@ -42,14 +121,7 @@ function HomePage() {
 
         {/* Centered hero copy (3D object removed for now) */}
         <div className="relative z-10 mx-auto flex w-full max-w-5xl flex-1 flex-col items-center justify-center px-6 pt-24 pb-6 text-center">
-          <motion.h1
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.05, ease: [0.2, 0, 0, 1] }}
-            className="mx-auto max-w-5xl text-balance font-display text-4xl font-semibold leading-[1.05] tracking-tight text-white drop-shadow-[0_2px_16px_rgba(0,0,0,0.5)] sm:text-6xl lg:text-7xl"
-          >
-            Engineering the next generation of AI products
-          </motion.h1>
+          <GlitchTitle />
 
           <motion.p
             initial={{ opacity: 0, y: 16 }}
@@ -99,6 +171,9 @@ function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* ── Solutions (interactive capability console) ── */}
+      <SolutionsSection />
     </div>
   );
 }

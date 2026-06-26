@@ -6,7 +6,7 @@ import { Orb } from "@/components/Orb";
 
 const LINKS = [
   { label: "Home", href: "#" },
-  { label: "Solutions", href: "#" },
+  { label: "Solutions", href: "#solutions" },
   { label: "Company", href: "#" },
 ] as const;
 

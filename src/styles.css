@@ -139,3 +139,95 @@
   -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 30%, transparent 75%);
   mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 30%, transparent 75%);
 }
+
+/* Marquee lanes — hardware-accelerated via transform, off the main thread.
+   Distance per lane is passed in as --marquee-distance; pause on hover. */
+@keyframes marquee-up {
+  to {
+    transform: translateY(calc(-1 * var(--marquee-distance)));
+  }
+}
+@keyframes marquee-down {
+  from {
+    transform: translateY(calc(-1 * var(--marquee-distance)));
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Chromatic glitch — RGB-split ghosts that slice and jitter over the title.
+   The base text stays crisp; two colored copies (cyan / magenta) tear across
+   it in short bursts. `data-text` mirrors the heading so the ghosts inherit
+   identical wrapping and typography.
+   ────────────────────────────────────────────────────────────────────────── */
+.glitch {
+  position: relative;
+  display: inline-block;
+}
+
+.glitch > .glitch-base {
+  position: relative;
+  z-index: 2;
+  /* Faint, infrequent multi-colour channel-split shimmer on the live text. */
+  animation: glitch-flicker 9s steps(1, end) infinite;
+}
+
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  color: inherit;
+  pointer-events: none;
+  text-wrap: balance;
+  /* Soften the seams between revealed slices. */
+  will-change: clip-path, transform, text-shadow;
+}
+
+/* Ghost A: nudged right, cycles through warm channels. */
+.glitch::before {
+  z-index: 1;
+  animation: glitch-slice-1 8s infinite steps(1, end);
+}
+
+/* Ghost B: nudged left, cycles through cool channels (offset timing). */
+.glitch::after {
+  z-index: 1;
+  animation: glitch-slice-2 6.5s infinite steps(1, end);
+}
+
+/* Ghost A: rare slice tears, each flashing a different colour. */
+@keyframes glitch-slice-1 {
+  0%, 100% { clip-path: inset(50% 0 50% 0); transform: translate(0, 0); text-shadow: 0.04em 0 #ff003c; }
+  4%  { clip-path: inset(8% 0 78% 0);  transform: translate(-0.06em, -0.02em); text-shadow: 0.05em 0 #ff003c, -0.03em 0 #ffd400; }
+  7%  { clip-path: inset(82% 0 4% 0);  transform: translate(0.05em, 0.01em);  text-shadow: 0.04em 0 #00ff85; }
+  10% { clip-path: inset(50% 0 50% 0); transform: translate(0, 0); }
+  64% { clip-path: inset(50% 0 50% 0); transform: translate(0, 0); }
+  68% { clip-path: inset(34% 0 52% 0); transform: translate(0.07em, 0);  text-shadow: 0.05em 0 #ff7a00, -0.04em 0 #b400ff; }
+  71% { clip-path: inset(64% 0 22% 0); transform: translate(-0.05em, 0.02em); text-shadow: 0.04em 0 #ff003c; }
+  74% { clip-path: inset(50% 0 50% 0); transform: translate(0, 0); }
+}
+
+/* Ghost B: offset timing so the two channels rarely line up. */
+@keyframes glitch-slice-2 {
+  0%, 100% { clip-path: inset(50% 0 50% 0); transform: translate(0, 0); text-shadow: -0.04em 0 #00f0ff; }
+  6%  { clip-path: inset(70% 0 16% 0); transform: translate(0.05em, 0.02em);  text-shadow: -0.05em 0 #00f0ff, 0.03em 0 #b400ff; }
+  9%  { clip-path: inset(26% 0 60% 0); transform: translate(-0.06em, -0.01em); text-shadow: -0.04em 0 #00ff85; }
+  12% { clip-path: inset(50% 0 50% 0); transform: translate(0, 0); }
+  52% { clip-path: inset(50% 0 50% 0); transform: translate(0, 0); }
+  56% { clip-path: inset(44% 0 40% 0); transform: translate(-0.07em, 0); text-shadow: -0.05em 0 #ffd400, 0.04em 0 #00f0ff; }
+  59% { clip-path: inset(8% 0 80% 0);  transform: translate(0.05em, 0.02em); text-shadow: -0.04em 0 #ff00d4; }
+  62% { clip-path: inset(50% 0 50% 0); transform: translate(0, 0); }
+}
+
+/* Live text: rare multi-colour channel-split blips synced to the bursts. */
+@keyframes glitch-flicker {
+  0%, 100%  { text-shadow: none; transform: translate(0, 0); }
+  4.5% { text-shadow: 0.02em 0 #ff003c, -0.02em 0 #00f0ff, 0 0.02em #ffd400; transform: translate(0.01em, 0); }
+  5.5% { text-shadow: none; transform: translate(0, 0); }
+  64%  { text-shadow: -0.02em 0 #b400ff, 0.02em 0 #00ff85; transform: translate(-0.01em, 0); }
+  65%  { text-shadow: none; transform: translate(0, 0); }
+}

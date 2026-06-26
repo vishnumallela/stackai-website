@@ -25,3 +25,7 @@ yarn-error.log*
 
 # TanStack Router generated route tree (regenerated on build; uncomment to ignore)
 # src/routeTree.gen.ts
+
+# installed agent skills / tooling
+.agents/
+skills-lock.json
