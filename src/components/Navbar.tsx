@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, m } from "motion/react";
 
 import { useVoice, formatDuration } from "@/lib/voice";
 import { Orb } from "@/components/Orb";
@@ -17,7 +17,7 @@ export function Navbar() {
   return (
     <header className="absolute inset-x-0 top-0 z-30">
       {/* Notch — top-left: nav links + orb (desktop) / call pill (active) */}
-      <motion.nav
+      <m.nav
         layout
         transition={{ type: "spring", bounce: 0.2, duration: 0.5 }}
         className="absolute left-6 top-0 flex items-center overflow-hidden rounded-b-2xl bg-background shadow-lg shadow-black/10 ring-1 ring-black/5"
@@ -25,7 +25,7 @@ export function Navbar() {
         <AnimatePresence mode="popLayout" initial={false}>
           {active ? <CallPill key="call" /> : <LinksRow key="links" />}
         </AnimatePresence>
-      </motion.nav>
+      </m.nav>
 
       {/* Brand — centered */}
       <a
@@ -83,7 +83,7 @@ export function Navbar() {
                 onClick={() => setMenuOpen(false)}
                 className="fixed inset-0 -z-10 cursor-default"
               />
-              <motion.div
+              <m.div
                 initial={{ opacity: 0, y: -8, scale: 0.96 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: -8, scale: 0.96 }}
@@ -100,7 +100,7 @@ export function Navbar() {
                     {link.label}
                   </a>
                 ))}
-              </motion.div>
+              </m.div>
             </>
           )}
         </AnimatePresence>
@@ -112,7 +112,7 @@ export function Navbar() {
 function LinksRow() {
   const { start } = useVoice();
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, filter: "blur(4px)" }}
       animate={{ opacity: 1, filter: "blur(0px)" }}
       exit={{ opacity: 0, filter: "blur(4px)" }}
@@ -141,7 +141,7 @@ function LinksRow() {
       >
         <Orb colors={["#F59E0B", "#FDE047"]} className="pointer-events-none size-8" />
       </button>
-    </motion.div>
+    </m.div>
   );
 }
 
@@ -160,7 +160,7 @@ function CallPill() {
             : "Live";
 
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, filter: "blur(4px)" }}
       animate={{ opacity: 1, filter: "blur(0px)" }}
       exit={{ opacity: 0, filter: "blur(4px)" }}
@@ -196,6 +196,6 @@ function CallPill() {
           <path d="M6.6 10.8a15.5 15.5 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.6 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.46.6 3.6a1 1 0 0 1-.25 1Z" />
         </svg>
       </button>
-    </motion.div>
+    </m.div>
   );
 }

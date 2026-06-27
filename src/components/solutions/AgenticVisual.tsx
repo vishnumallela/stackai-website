@@ -1,4 +1,4 @@
-import { motion } from "motion/react";
+import { m } from "motion/react";
 
 import type { VisualProps } from "./types";
 
@@ -44,7 +44,7 @@ export function AgenticVisual({ accent, reduced }: VisualProps) {
         {ORBITS.map((o, i) => (
           <g key={i} transform={`rotate(${o.tilt} ${C.x} ${C.y})`}>
             <ellipse cx={C.x} cy={C.y} rx={RX} ry={RY} fill="none" stroke={accent} strokeOpacity={0.1} strokeWidth={1} />
-            <motion.ellipse
+            <m.ellipse
               cx={C.x}
               cy={C.y}
               rx={RX}
@@ -62,13 +62,13 @@ export function AgenticVisual({ accent, reduced }: VisualProps) {
         ))}
 
         {/* pulsing core */}
-        <motion.g
+        <m.g
           style={{ transformOrigin: `${C.x}px ${C.y}px` }}
           animate={reduced ? undefined : { scale: [1, 1.09, 1], opacity: [0.85, 1, 0.85] }}
           transition={{ duration: 3.4, repeat: Infinity, ease: "easeInOut" }}
         >
           <circle cx={C.x} cy={C.y} r={32} fill="url(#ag-core)" />
-        </motion.g>
+        </m.g>
         <circle cx={C.x} cy={C.y} r={6} fill={accent} filter="url(#ag-glow)" />
         <circle cx={C.x} cy={C.y} r={2.5} fill="#ffffff" />
       </svg>

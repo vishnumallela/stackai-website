@@ -1,4 +1,4 @@
-import { motion } from "motion/react";
+import { m } from "motion/react";
 
 import type { VisualProps } from "./types";
 
@@ -23,7 +23,7 @@ export function LanguageVisual({ accent, reduced }: VisualProps) {
         ))}
 
         {!reduced && (
-          <motion.rect
+          <m.rect
             x={124}
             width={244}
             height={20}
@@ -36,7 +36,7 @@ export function LanguageVisual({ accent, reduced }: VisualProps) {
         )}
 
         {/* resolved answer */}
-        <motion.rect
+        <m.rect
           x={134}
           y={214}
           height={9}

@@ -1,4 +1,4 @@
-import { motion } from "motion/react";
+import { m } from "motion/react";
 
 import type { VisualProps } from "./types";
 
@@ -33,8 +33,8 @@ export function AnalyticsVisual({ accent, reduced }: VisualProps) {
         {/* baseline */}
         <line x1={PAD_X} y1={BASE_Y} x2={480 - PAD_X} y2={BASE_Y} stroke="#ffffff" strokeOpacity={0.08} />
 
-        <motion.path d={areaPath} fill="url(#an-area)" initial={reduced ? false : { opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.9, delay: 0.7 }} />
-        <motion.path
+        <m.path d={areaPath} fill="url(#an-area)" initial={reduced ? false : { opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.9, delay: 0.7 }} />
+        <m.path
           d={linePath}
           fill="none"
           stroke={accent}
@@ -50,7 +50,7 @@ export function AnalyticsVisual({ accent, reduced }: VisualProps) {
         {/* leading readout */}
         <circle cx={lastX} cy={lastY} r={5} fill="#fff" />
         {!reduced && (
-          <motion.circle
+          <m.circle
             cx={lastX}
             cy={lastY}
             r={5}

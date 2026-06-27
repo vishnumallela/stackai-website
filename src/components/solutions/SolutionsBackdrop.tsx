@@ -78,7 +78,9 @@ const frag = /* glsl */ `
 function Field({ accent, reduced }: VisualProps) {
   const ref = useRef<THREE.ShaderMaterial>(null);
   const { size } = useThree();
-  const target = useRef(new THREE.Color(accent));
+  // Lazy init so the Color isn't reallocated and discarded on every render.
+  const target = useRef<THREE.Color>(null!);
+  if (!target.current) target.current = new THREE.Color(accent);
 
   useEffect(() => {
     target.current.set(accent);

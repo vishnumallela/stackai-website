@@ -1,4 +1,4 @@
-import { motion } from "motion/react";
+import { m } from "motion/react";
 
 import type { VisualProps } from "./types";
 
@@ -15,7 +15,7 @@ export function MLOpsVisual({ accent, reduced }: VisualProps) {
         <line x1={40} y1={135} x2={440} y2={135} stroke="#ffffff" strokeOpacity={0.06} />
         <path d={ECG} fill="none" stroke={accent} strokeOpacity={0.18} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
         {!reduced && (
-          <motion.path
+          <m.path
             d={ECG}
             fill="none"
             stroke={accent}
@@ -31,7 +31,7 @@ export function MLOpsVisual({ accent, reduced }: VisualProps) {
         )}
         {/* uptime ticks */}
         {[78, 150, 300, 372].map((x, i) => (
-          <motion.circle
+          <m.circle
             key={i}
             cx={x}
             cy={200}

@@ -1,4 +1,4 @@
-import { motion } from "motion/react";
+import { m } from "motion/react";
 
 import type { VisualProps } from "./types";
 
@@ -15,7 +15,7 @@ export function PredictiveVisual({ accent, reduced }: VisualProps) {
     <div className="absolute inset-0">
       <svg viewBox="0 0 480 270" preserveAspectRatio="xMidYMid meet" className="h-full w-full">
         {/* forecast cone */}
-        <motion.path
+        <m.path
           d="M 318 112 L 424 74 L 424 150 Z"
           fill={accent}
           fillOpacity={0.12}
@@ -24,7 +24,7 @@ export function PredictiveVisual({ accent, reduced }: VisualProps) {
           transition={{ duration: 0.8, delay: 1 }}
         />
         {/* fitted trend */}
-        <motion.path
+        <m.path
           d="M 150 180 L 318 112"
           fill="none"
           stroke={accent}
@@ -35,7 +35,7 @@ export function PredictiveVisual({ accent, reduced }: VisualProps) {
           transition={{ duration: 1.4, ease: "easeInOut" }}
         />
         {/* forecast extension */}
-        <motion.path
+        <m.path
           d="M 318 112 L 424 112"
           fill="none"
           stroke={accent}
@@ -48,7 +48,7 @@ export function PredictiveVisual({ accent, reduced }: VisualProps) {
         />
         {/* observations */}
         {PTS.map((p, i) => (
-          <motion.circle
+          <m.circle
             key={i}
             cx={p[0]}
             cy={p[1]}
@@ -61,7 +61,7 @@ export function PredictiveVisual({ accent, reduced }: VisualProps) {
         ))}
         <circle cx={424} cy={112} r={5} fill="#ffffff" />
         {!reduced && (
-          <motion.circle cx={424} cy={112} r={5} fill="none" stroke={accent} animate={{ r: [5, 15], opacity: [0.8, 0] }} transition={{ duration: 1.6, repeat: Infinity, ease: "easeOut" }} />
+          <m.circle cx={424} cy={112} r={5} fill="none" stroke={accent} animate={{ r: [5, 15], opacity: [0.8, 0] }} transition={{ duration: 1.6, repeat: Infinity, ease: "easeOut" }} />
         )}
       </svg>
     </div>

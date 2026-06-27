@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { motion } from "motion/react";
+import { m } from "motion/react";
 
 import type { VisualProps } from "./types";
 
@@ -67,7 +67,7 @@ export function VoiceVisual({ accent, reduced }: VisualProps) {
         {/* emanating sound rings */}
         {!reduced &&
           [0, 1].map((i) => (
-            <motion.circle
+            <m.circle
               key={i}
               cx={C.x}
               cy={C.y}

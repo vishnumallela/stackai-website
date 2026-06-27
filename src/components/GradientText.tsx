@@ -1,6 +1,6 @@
-import { useState, useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import type { ReactNode } from "react";
-import { motion, useMotionValue, useAnimationFrame, useTransform } from "motion/react";
+import { m, useMotionValue, useAnimationFrame, useTransform } from "motion/react";
 
 interface GradientTextProps {
   children: ReactNode;
@@ -23,7 +23,9 @@ export default function GradientText({
   pauseOnHover = false,
   yoyo = true,
 }: GradientTextProps) {
-  const [isPaused, setIsPaused] = useState(false);
+  // Pause is read only inside the animation frame, never rendered — keep it in a
+  // ref so toggling hover doesn't trigger a re-render.
+  const isPausedRef = useRef(false);
   const progress = useMotionValue(0);
   const elapsedRef = useRef(0);
   const lastTimeRef = useRef<number | null>(null);
@@ -31,7 +33,7 @@ export default function GradientText({
   const animationDuration = animationSpeed * 1000;
 
   useAnimationFrame((time) => {
-    if (isPaused) {
+    if (isPausedRef.current) {
       lastTimeRef.current = null;
       return;
     }
@@ -70,11 +72,11 @@ export default function GradientText({
   });
 
   const handleMouseEnter = useCallback(() => {
-    if (pauseOnHover) setIsPaused(true);
+    if (pauseOnHover) isPausedRef.current = true;
   }, [pauseOnHover]);
 
   const handleMouseLeave = useCallback(() => {
-    if (pauseOnHover) setIsPaused(false);
+    if (pauseOnHover) isPausedRef.current = false;
   }, [pauseOnHover]);
 
   const gradientAngle =
@@ -88,13 +90,13 @@ export default function GradientText({
   };
 
   return (
-    <motion.div
+    <m.div
       className={`relative mx-auto flex max-w-fit flex-row items-center justify-center overflow-hidden rounded-[1.25rem] font-medium ${showBorder ? "px-2 py-1" : ""} ${className}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
       {showBorder && (
-        <motion.div
+        <m.div
           className="pointer-events-none absolute inset-0 z-0 rounded-[1.25rem]"
           style={{ ...gradientStyle, backgroundPosition }}
         >
@@ -108,14 +110,14 @@ export default function GradientText({
               transform: "translate(-50%, -50%)",
             }}
           />
-        </motion.div>
+        </m.div>
       )}
-      <motion.div
+      <m.div
         className="z-2 relative inline-block bg-clip-text text-transparent"
         style={{ ...gradientStyle, backgroundPosition, WebkitBackgroundClip: "text" }}
       >
         {children}
-      </motion.div>
-    </motion.div>
+      </m.div>
+    </m.div>
   );
 }

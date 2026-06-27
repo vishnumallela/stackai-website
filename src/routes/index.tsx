@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, m, useReducedMotion } from "motion/react";
 import type { Variants } from "motion/react";
 
 import { buttonClass } from "@/components/ui/button";
@@ -72,7 +72,7 @@ function GlitchTitle() {
     // without layout shift; each h1 stays sized to its own text.
     <div className="relative mx-auto grid min-h-[2.2em] w-full max-w-5xl place-items-center">
       <AnimatePresence initial={false}>
-        <motion.h1
+        <m.h1
           key={index}
           variants={variants}
           initial="initial"
@@ -82,7 +82,7 @@ function GlitchTitle() {
           data-text={title}
         >
           <span className="glitch-base">{title}</span>
-        </motion.h1>
+        </m.h1>
       </AnimatePresence>
     </div>
   );
@@ -123,7 +123,7 @@ function HomePage() {
         <div className="relative z-10 mx-auto flex w-full max-w-5xl flex-1 flex-col items-center justify-center px-6 pt-24 pb-6 text-center">
           <GlitchTitle />
 
-          <motion.p
+          <m.p
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, delay: 0.12, ease: [0.2, 0, 0, 1] }}
@@ -131,9 +131,9 @@ function HomePage() {
           >
             We build custom AI agents and automation that turn your data, tools,
             and workflows into real business outcomes.
-          </motion.p>
+          </m.p>
 
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, delay: 0.2, ease: [0.2, 0, 0, 1] }}
@@ -149,7 +149,7 @@ function HomePage() {
             >
               Book a demo
             </a>
-          </motion.div>
+          </m.div>
         </div>
 
         {/* Client logo loop, full width */}

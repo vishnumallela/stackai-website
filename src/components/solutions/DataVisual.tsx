@@ -1,4 +1,4 @@
-import { motion } from "motion/react";
+import { m } from "motion/react";
 
 import type { VisualProps } from "./types";
 
@@ -48,18 +48,18 @@ export function DataVisual({ accent, reduced }: VisualProps) {
         {STAGES.map((s, i) => (
           <g key={i}>
             <IsoBlock cx={s.cx} cy={s.cy} accent={accent} />
-            <motion.g
+            <m.g
               animate={reduced ? undefined : { y: [0, -6, 0] }}
               transition={{ duration: 3, delay: i * 0.4, repeat: Infinity, ease: "easeInOut" }}
             >
               <IsoBlock cx={s.cx} cy={s.cy - 52} accent={accent} w={W * 0.5} h={H * 0.5} bh={10} />
-            </motion.g>
+            </m.g>
           </g>
         ))}
 
         {/* single packet flowing the full chain */}
         {!reduced && (
-          <motion.circle
+          <m.circle
             r={4.5}
             fill="#fff"
             initial={{ cx: STAGES[0].cx, cy: STAGES[0].cy, opacity: 0 }}

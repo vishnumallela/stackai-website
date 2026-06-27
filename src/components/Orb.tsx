@@ -98,8 +98,11 @@ function Scene({
   const circleRef =
     useRef<THREE.Mesh<THREE.CircleGeometry, THREE.ShaderMaterial>>(null);
   const initialColorsRef = useRef<[string, string]>(colors);
-  const targetColor1Ref = useRef(new THREE.Color(colors[0]));
-  const targetColor2Ref = useRef(new THREE.Color(colors[1]));
+  // Lazy init so the Colors aren't reallocated and discarded on every render.
+  const targetColor1Ref = useRef<THREE.Color>(null!);
+  if (!targetColor1Ref.current) targetColor1Ref.current = new THREE.Color(colors[0]);
+  const targetColor2Ref = useRef<THREE.Color>(null!);
+  if (!targetColor2Ref.current) targetColor2Ref.current = new THREE.Color(colors[1]);
   const animSpeedRef = useRef(0.1);
   const perlinNoiseTexture = useTexture("/textures/perlin-noise.png");
 

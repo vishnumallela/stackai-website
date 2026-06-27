@@ -1,4 +1,4 @@
-import { motion } from "motion/react";
+import { m } from "motion/react";
 
 import type { VisualProps } from "./types";
 
@@ -31,13 +31,13 @@ export function VisionVisual({ accent, reduced }: VisualProps) {
         </defs>
 
         {/* primary lock-on bracket */}
-        <motion.g
+        <m.g
           style={{ transformOrigin: "240px 135px" }}
           animate={reduced ? undefined : { scale: [1.04, 1, 1.04], opacity: [0.7, 1, 0.7] }}
           transition={{ duration: 2.6, repeat: Infinity, ease: "easeInOut" }}
         >
           <Bracket x={158} y={73} w={164} h={124} accent={accent} len={24} sw={2.4} />
-        </motion.g>
+        </m.g>
 
         {/* secondary subject */}
         <g opacity={0.4}>
@@ -55,10 +55,10 @@ export function VisionVisual({ accent, reduced }: VisualProps) {
 
         {/* scan beam */}
         {!reduced && (
-          <motion.g animate={{ y: [-52, 270] }} transition={{ duration: 3.4, repeat: Infinity, ease: "linear" }}>
+          <m.g animate={{ y: [-52, 270] }} transition={{ duration: 3.4, repeat: Infinity, ease: "linear" }}>
             <rect x={0} y={0} width={480} height={52} fill="url(#cv-scan)" />
             <line x1={0} y1={52} x2={480} y2={52} stroke={accent} strokeWidth={1.5} strokeOpacity={0.9} />
-          </motion.g>
+          </m.g>
         )}
       </svg>
     </div>

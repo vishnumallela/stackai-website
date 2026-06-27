@@ -1,4 +1,4 @@
-import { motion } from "motion/react";
+import { m } from "motion/react";
 
 import type { VisualProps } from "./types";
 
@@ -22,7 +22,7 @@ export function DocumentVisual({ accent, reduced }: VisualProps) {
         ))}
         {/* extracted fields */}
         {FIELDS.map((f, i) => (
-          <motion.rect
+          <m.rect
             key={i}
             x={f.x}
             y={f.y}

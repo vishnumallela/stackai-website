@@ -1,4 +1,4 @@
-import { motion } from "motion/react";
+import { m } from "motion/react";
 
 import type { VisualProps } from "./types";
 
@@ -31,12 +31,12 @@ export function GenerativeVisual({ accent, reduced }: VisualProps) {
           </filter>
         </defs>
 
-        <motion.g
+        <m.g
           style={{ transformOrigin: `${C.x}px ${C.y}px` }}
           animate={reduced ? undefined : { rotate: 360 }}
           transition={{ duration: 26, repeat: Infinity, ease: "linear" }}
         >
-          <motion.path
+          <m.path
             d={star(C.x, C.y, 52, 11)}
             fill={accent}
             filter="url(#gen-glow)"
@@ -44,11 +44,11 @@ export function GenerativeVisual({ accent, reduced }: VisualProps) {
             animate={reduced ? undefined : { scale: [1, 1.12, 1], opacity: [0.85, 1, 0.85] }}
             transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
           />
-        </motion.g>
+        </m.g>
         <circle cx={C.x} cy={C.y} r={7} fill="#ffffff" />
 
         {TWINKLES.map((tw, i) => (
-          <motion.path
+          <m.path
             key={i}
             d={star(tw.x, tw.y, tw.s, tw.s * 0.22)}
             fill={accent}
